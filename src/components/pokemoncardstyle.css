@@ -1,0 +1,166 @@
+.pokemon-image-border {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: solid 3px white;
+  margin: 10px;
+  border-radius: 20px;
+  left: 0;
+  top: 0;
+  padding: 0px;
+  /* max-width: 125px;
+  max-height: 125px; */
+  transition: 0.7s, background 0.8s;
+  overflow: hidden;
+  background-color: black;
+  background-image: none;
+  background-size: 0;
+  background-position: center;
+  justify-content: center;
+  /* min-width: 125px;
+  min-height: 100px; */
+  width: 15%;
+  max-height: fit-content;
+}
+
+.pokemon-image-border label {
+  font-family: 'VT323', monospace;
+  font-size: 1.25em;
+  color: gold;
+  text-align: center;
+  padding-bottom: 2px;
+  /* border-bottom: 4px blue solid; */
+}
+
+.pokemon-image {
+  padding: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: crisp-edges;
+  /* position: absolute; */
+}
+
+.card-type-gradient {
+  width: 100%;
+  height: 10px;
+  /* background-image: linear-gradient(to right, red, blue); */
+  background-size: contain;
+}
+
+.split-type-line {
+  display: flex;
+  flex-direction: row;
+ justify-content: space-between;
+ width: 100%;
+ height: 10px;
+}
+
+.split-type-bar {
+  width: 50%;
+}
+
+.pokemon-image-border:hover {
+  background: url("./images/rotate.gif");
+  border: solid 3px gold;
+  background-color: black;
+  background-size: cover;
+  margin: 10px;
+  background-position: center;
+  background-size: cover;
+  transition: 0.5s ease-in-out;
+  scale: 1.1;
+  /* border-radius: 20px;
+  padding: 7px;
+  min-width: 100px;
+  min-height: 100px;
+  max-width: 150px;
+  max-height: 150px; */
+}
+
+.pokemon-image-border:hover
+label {
+  color:darkred;
+}
+
+.pokemon-background-image {
+  position: relative;
+  left: 0;
+  top: 0;
+  background-size: 100% 100%;
+  visibility: visible;
+  padding: 0;
+  width: 100%;
+  height: 100px;
+}
+
+.pokemon-background-image:hover {
+  background: url("./images/pokeball-png.png");
+
+  -webkit-animation-name: rotate;
+  -webkit-animation-duration: 5s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  -moz-animation-name: rotate;
+  -moz-animation-duration: 5s;
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-timing-function: linear;
+}
+
+.pokemon-image-border::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  z-index: -1;
+  background: url("./images/pokeball-png.png") 0 0 repeat;
+  transform: rotate(180deg);
+}
+
+@keyframes rotate {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+.pokemon-id-number {
+  text-align: center;
+  position: relative;
+  font-size: 1.25rem;/*calc(0.75vw + 1vh);*/
+  font-family: "Courier New";
+  font-weight: bold;
+  color: black;
+  text-align: center;
+  background-color: white;
+  padding: 3px 0 0px 0;
+  /* min-width: 10%;
+  min-height: 10%; */
+  width: 100%;
+  max-width: 100%;
+  /* border-radius: 15px 0 5px 0; */
+  margin: 0;
+  opacity: 0.75;
+}
+
+.link-fill {
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (min-width: 1800px) {
+  .pokemon-image-border {
+    width: 12.5%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .pokemon-image-border {
+    width: 25%;
+  } 
+}
