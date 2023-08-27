@@ -156,56 +156,8 @@ const PokemonInformation = (props) => {
     }
   }, []);
 
-  const fetchPokeInfo = (id) => {
-    fetch("https://pokeapi.co/api/v2/pokemon/" + id)
-      .then(res => res.json())
-      .then(result => {
-        if (result)
-          fetch(result.species.url)
-            .then(res => res.json())
-            .then(result => {
-              setInformation(result);
-              // console.log(result);
-            });
-      });
-  }
-
-  const navToPrevious = () => {
-    if (parseInt(information.id, 10) - 1 > 0) {
-      fetchPokeInfo(information.id - 1);
-    }
-  }
-
-  const navToNext = () => {
-    fetchPokeInfo(information.id + 1);
-  }
-
   const returnToPokedex = () => {
     props.closeFunction();
-  }
-
-  const returnAbilityString = () => {
-    let abilities = information.abilities;
-
-    // console.log(abilities);
-
-    if (abilities.length === 2) {
-      return (
-        capitalize(abilities[0].ability.name) +
-        ", " +
-        capitalize(abilities[1].ability.name)
-      );
-    } else if (abilities.length === 1) {
-      return capitalize(abilities[0].ability.name);
-    } else {
-      return "N/A";
-    }
-  }
-
-  const returnPokeTypes = () => {
-    if (information) {
-      // if (information.)
-    }
   }
 
   const navigateLeft = () => {
@@ -233,6 +185,13 @@ const PokemonInformation = (props) => {
   const handleClickOutside = () => {
     returnToPokedex();
   };
+
+  useEffect(() => {
+    console.log(initialInformation);
+    console.log(information);
+    if (initialInformation)
+      document.title = capitalize(initialInformation.name);
+  }, [initialInformation, information])
 
   const useOutsideClick = () => {
     const ref = React.useRef();
@@ -264,19 +223,17 @@ const PokemonInformation = (props) => {
   return (
     isLoaded ?
       (<Fade opposite top duration={300} key={initialInformation}>
-        <div className="pokeinfo-wrapper">
-          <div
-            className="pokemon-information-background"
-            id="pokemon-information-background"
-          >
-            <div className="navbar-top">
-              <div className="pokemon-name"> {initialInformation.name}</div>
-              {/* {this.displayPrevButton()} */}
-              {/* <NavToNext currentNum={idNum}></NavToNext> */}
-            </div>
-            {/* {showInformation()} */}
+        {information && initialInformation ? (
+          <div className="pokeinfo-wrapper">
 
-            {information && initialInformation ? (
+            <div
+              className="pokemon-information-background"
+              id="pokemon-information-background"
+            >
+              <div className="navbar-top">
+                <div className="pokemon-name"> {initialInformation.name}</div>
+              </div>
+
               <div className="info-scroller">
                 {/* <div className='prev' onClick={navToPrevious}>
                 </div> */}
@@ -297,15 +254,19 @@ const PokemonInformation = (props) => {
                     </div>
 
                     <div className="pokeimage-screen">
-                      <div className="pokeimage-screen_types">
-                        <div className="poketype" style={{ background: convertColor(initialInformation.types[0].type.name) }}>
-                          {initialInformation.types[0].type.name}
+
+                      {initialInformation.types[0].type ? (
+                        <div className="pokeimage-screen_types">
+                          <div className="poketype" style={{ background: convertColor(initialInformation.types[0].type.name) }}>
+                            {initialInformation.types[0].type.name}
+                          </div>
+                          {initialInformation.types[1] ?
+                            (<div className="poketype" style={{ background: convertColor(initialInformation.types[1].type.name) }}>
+                              {initialInformation.types[1].type.name}
+                            </div>) : (<></>)}
                         </div>
-                        {initialInformation.types[1] ?
-                          (<div className="poketype" style={{ background: convertColor(initialInformation.types[1].type.name) }}>
-                            {initialInformation.types[1].type.name}
-                          </div>) : (<></>)}
-                      </div>
+                      ) : <LoadingScreen />}
+
 
                       {/* Image gallery */}
                       <div className="image-gallery">
@@ -326,18 +287,23 @@ const PokemonInformation = (props) => {
                       </div>
 
                       <div className="generation-text">
-                        <label>
-                          {formatGeneration(information.generation.name)}
-                        </label>
+                        {information.generation ? (
+                          <label>
+                            {formatGeneration(information.generation.name)}
+                          </label>
+                        ) : <LoadingScreen />}
                       </div>
 
                       {/* Flavor Text */}
                       {information.flavor_text_entries[0] ?
-                        (<div className="flavor-text">
-                          <label>
-                            <TypeAnimation sequence={["> " + information.flavor_text_entries.filter(e => e.language.name === 'en')[0].flavor_text]} cursor={true} speed={70} />
-                          </label>
-                        </div>) : null}
+                        (
+                          <div className="flavor-text-wrapper">
+                            <div className="flavor-text">
+                              <label>
+                                <TypeAnimation sequence={["> " + information.flavor_text_entries.filter(e => e.language.name === 'en')[0].flavor_text]} cursor={true} speed={70} />
+                              </label>
+                            </div>
+                          </div>) : null}
 
                     </div>
                     {/* Posture */}
@@ -366,9 +332,16 @@ const PokemonInformation = (props) => {
 
 
                     <div className="misc-info">
-                      <label>Posture: <span>{information.shape.name}</span></label>
-                      <hr></hr>
-                      <label>Capture Rate: <span>{information.capture_rate}</span></label>
+                      {information.shape ? (
+                        <React.Fragment>
+                          <label>Posture: <span>{information.shape.name}</span></label>
+                          <hr></hr>
+                        </React.Fragment>
+                      ) : <></>}
+
+                      {information.capture_rate ? (
+                        <label>Capture Rate: <span>{information.capture_rate}</span></label>
+                      ) : <></>}
                     </div>
                   </div>
 
@@ -454,21 +427,21 @@ const PokemonInformation = (props) => {
                     ) : (<></>)
                   }
                 </div>
-              </div>) : (<LoadingScreen />)}
+              </div>
 
-            <div className="return-link" onClick={returnToPokedex}>
-              {/* <input
+              <div className="return-link" onClick={returnToPokedex}>
+                {/* <input
                 className="return-button"
                 type="submit"
                 value="Return to Pokédex"
                 onClick={returnToPokedex}
               ></input> */}
-              <img src={require('./images/uparrow.png')} />
-              <img src={require('./images/uparrow.png')} />
-              <img src={require('./images/uparrow.png')} />
+                <img src={require('./images/uparrow.png')} />
+                <img src={require('./images/uparrow.png')} />
+                <img src={require('./images/uparrow.png')} />
+              </div>
             </div>
-          </div>
-        </div>
+          </div>) : (<LoadingScreen />)}
       </Fade >)
       :
       (<LoadingScreen />)

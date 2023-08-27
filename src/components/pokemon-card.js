@@ -15,8 +15,18 @@ const PokemonCard = (props) => {
   const [clicked, setClicked] = useState();
   const callbackFunc = props.callbackFunc;
 
+  useEffect(() => {
+
+  })
+
+
   const UpdateClick = () => {
     // navigate('/' + information.name);
+    console.log(props.isEvo);
+    if (props.isEvo) {
+      props.closeFunction();
+      console.log("closing...");
+    }
     props.setPokeinformation(information);
     //window.location.href = "/pokedex-react/#/pokeinfo/" + name;
   }

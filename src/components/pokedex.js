@@ -60,7 +60,6 @@ const Pokedex = () => {
   const [sortMethod, setSortMethod] = useState('Lowest - Highest');
   const [hasMoreToLoad, setHasMoreToLoad] = useState(true);
 
-
   useEffect(() => {
     setLoading(false);
   }, [loadList])
@@ -126,11 +125,29 @@ const Pokedex = () => {
   };
 
   const setPokemon = (pokeinfo) => {
-    setSelectedPokemon(pokeinfo);
+
+    // if (!selectedPokemon) {
+    //   setSelectedPokemon(pokeinfo);
+    //   setPokemonClicked(true);
+    // }
+    // else {
+    //   setReload(true);
+    //   setSelectedPokemon(pokeinfo);
+    // }
+
     setPokemonClicked(true);
+    setSelectedPokemon(pokeinfo);
 
     document.title = capitalize(pokeinfo.name);
   }
+
+  // useEffect(() => {
+  //   setReload(false);
+  // }, reload)
+
+  useEffect(() => {
+    console.log(selectedPokemon);
+  }, [selectedPokemon])
 
   const closePokemon = () => {
     setSelectedPokemon(null);
@@ -332,6 +349,7 @@ const Pokedex = () => {
                       className="pokemon-search"
                       type="text"
                       onChange={inputOnChange}
+                      value={searchValue}
                       id="pokemon-search-bar"
                       placeholder="Search for a Pokémon..."
                       autoComplete="off"
@@ -433,6 +451,7 @@ const Pokedex = () => {
                             key={p.id + p.name}
                             setPokeinformation={setPokemon}
                             isEvo={false}
+                            close={closePokemon}
                           ></PokemonCard>
                         ))}
                       </div>
@@ -511,9 +530,11 @@ const Pokedex = () => {
       </React.Fragment >
 
       {
-        pokemonClicked ? <PokemonInformation passFunction={setPokemon} setPokeinformation={selectedPokemon} key={selectedPokemon} closeFunction={closePokemon}>
+        pokemonClicked ?
+          <PokemonInformation passFunction={setPokemon} setPokeinformation={selectedPokemon} key={selectedPokemon} closeFunction={closePokemon}>
 
-        </PokemonInformation> : <></>}
+          </PokemonInformation>
+          : <></>}
       {/* </HashRouter > */}
     </div >)
   );
