@@ -2,7 +2,7 @@
 
 This is the second iteration of my retro-twist-style Pokedex site.  All data is sourced from the PokeAPI and stylizing and responsive nature is completely native CSS.  Some of the animations are sourced React libraries and their components (such as Fade).
 
-Click [here]((https://neerb.github.io/pokedex-v2/)) to try it out
+Click [here](https://neerb.github.io/pokedex-v2/) to try it out
 
 ## Installation
 
